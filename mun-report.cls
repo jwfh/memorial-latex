@@ -38,7 +38,7 @@
 
 \RequirePackage{calc}
 \RequirePackage{fancyhdr}
-\RequirePackage[margin=1.25in]{geometry}
+\RequirePackage[right=1.25in, left=1.25in, top=1in, bottom=1in, includeheadfoot]{geometry}
 \RequirePackage{graphicx}
 \RequirePackage{hyperref}
 \RequirePackage{ifthen}
@@ -120,7 +120,7 @@
 % Page headers:
 %
 \pagestyle{fancy}
-\setlength{\headheight}{.75in}
+% \setlength{\headheight}{.75in}
 \renewcommand{\headrulewidth}{0.0pt}
 
 \fancyhead{}
@@ -131,7 +131,7 @@
 \fancyfoot[C] {\neutralcolour \bf \thepage}
 
 \fancypagestyle{plain}{
-\setlength{\headheight}{.25in}
+% \setlength{\headheight}{.25in}
 \fancyhead{}
 \fancyfoot[C] {\neutralcolour \bf \thepage}
 }
@@ -153,6 +153,7 @@
 \renewcommand{\maketitle}
 {%
   \thispagestyle{plain}
+  \vspace*{-0.75in}
 
   \mbox{%
     \parbox{3.25in}{%
