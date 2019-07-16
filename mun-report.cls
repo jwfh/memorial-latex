@@ -99,6 +99,8 @@
 \newcommand{\@reportdate}{XX YYY ZZZZ}
 \newcommand{\@reporttype}{Assignment}
 
+\newcommand{\@studentname}{Irma Semper}
+\newcommand{\@studentnumber}{1234567}
 
 %
 % Externally-visible commands to define course information.  These are
@@ -112,6 +114,9 @@
 \newcommand{\reporttitle}[1]{\renewcommand\@reporttitle{#1}}
 \newcommand{\reportdate}[1]{\renewcommand\@reportdate{#1}}
 \newcommand{\reporttype}[1]{\renewcommand\@reporttype{#1}}
+
+\newcommand{\studentname}[1]{\renewcommand{\@studentname}{#1}}
+\newcommand{\studentnumber}[1]{\renewcommand{\@studentnumber}{#1}}
 
 \newcommand{\@XX}{XX}
 
@@ -165,6 +170,7 @@
       \@reporttype \\
       \@courseprefix \@coursenumber \\
       \\
+      \@studentname\ --- \@studentnumber \\
       \@reportdate
     }
   }
