@@ -43,6 +43,7 @@
 \RequirePackage{hyperref}
 \RequirePackage{ifthen}
 \RequirePackage[framemethod=tikz]{mdframed}
+\RequirePackage{multicol}
 \RequirePackage{parskip}
 \RequirePackage{tabularx}
 \RequirePackage{titlesec}
@@ -69,6 +70,18 @@
 \newif\if@bigtitle
 \@bigtitlefalse
 \DeclareOption{bigtitle}{\@bigtitletrue}
+
+\newif\if@longreport
+\@longreportfalse
+\DeclareOption{longreport}{\@longreporttrue}
+
+\newif\ifblackandwhite
+\blackandwhitefalse
+\DeclareOption{bw}{
+	\blackandwhitetrue
+	\renewcommand{\headercolour}{}
+	\renewcommand{\neutralcolour}{}
+}
 
 %
 % Pass the remaining options to 'article'.
@@ -98,6 +111,7 @@
 \newcommand{\@reporttitle}{An unnamed report}
 \newcommand{\@reportdate}{XX YYY ZZZZ}
 \newcommand{\@reporttype}{Assignment}
+\newcommand{\@reportrecipient}{Dr.~John~Appleseed\\Faculty of Engineering and Applied Science\\Department of Electrical and Computer Engineering}
 
 \newcommand{\@studentname}{Irma Semper}
 \newcommand{\@studentnumber}{1234567}
@@ -114,6 +128,7 @@
 \newcommand{\reporttitle}[1]{\renewcommand\@reporttitle{#1}}
 \newcommand{\reportdate}[1]{\renewcommand\@reportdate{#1}}
 \newcommand{\reporttype}[1]{\renewcommand\@reporttype{#1}}
+\newcommand{\reportrecipient}[1]{\renewcommand{\@reportnumber}{#1}}
 
 \newcommand{\studentname}[1]{\renewcommand{\@studentname}{#1}}
 \newcommand{\studentnumber}[1]{\renewcommand{\@studentnumber}{#1}}
@@ -131,14 +146,19 @@
 \fancyhead{}
 \fancyfoot{}
 
-\fancyhead[L] {\neutralcolour \it \@shortfaculty~\@coursenumber:~\@coursename}
-\fancyhead[R] {\headercolour \it \@reporttype\ifx\@reportnumber\@XX\relax~---~\else:~\fi\@reporttitle}
-\fancyfoot[C] {\neutralcolour \bf \thepage}
-
+\if@longreport
+	\fancyhead[L] {\neutralcolour \it \@shortfaculty~\@coursenumber:~\@coursename}
+	\fancyhead[R] {\headercolour \it \@reporttype}
+	\fancyfoot[C] {\neutralcolour \bf --\,\thepage\,--}
+\else
+	\fancyhead[L] {\neutralcolour \it \@shortfaculty~\@coursenumber:~\@coursename}
+	\fancyhead[R] {\headercolour \it \@reporttype\ifx\@reportnumber\@XX\relax~---~\else:~\fi\@reporttitle}
+	\fancyfoot[C] {\neutralcolour \bf --\,\thepage\,--}
+\fi
 \fancypagestyle{plain}{
-% \setlength{\headheight}{.25in}
-\fancyhead{}
-\fancyfoot[C] {\neutralcolour \bf \thepage}
+	% \setlength{\headheight}{.25in}
+	\fancyhead{}
+	\fancyfoot[C] {\neutralcolour \bf --\,\thepage\,--}
 }
 
 
@@ -146,6 +166,11 @@
 % No paragraph indentation:
 %
 \setlength{\parindent}{0cm}
+
+%
+% Widen the gutter between columns
+%
+\setlength{\columnsep}{18pt}
 
 
 %
@@ -157,31 +182,62 @@
 
 \renewcommand{\maketitle}
 {%
-  \thispagestyle{plain}
-  \vspace*{-0.75in}
+	\if@longreport
+		\thispagestyle{empty}
+		\vspace*{-48pt}
+		\begin{flushright}
+			\ifblackandwhite
+			\includegraphics[width=1.5in]{memorial-bw}
+			\else
+			\includegraphics[width=1.5in]{memorial}
+			\fi
+		\end{flushright}
+		\vskip 96pt
+		\begin{center}
+			{\sffamily\bfseries\huge\headercolour \@reporttitle}
+			\par\vskip 9pt 
+			{\sffamily\Large\neutralcolour \@coursename~\@reporttype}
+			\par\vskip 6pt 
+			{\large\neutralcolour \@studentname\par\@studentnumber}
+		\end{center}
+		\vfill
+		{\neutralcolour\itshape {\bfseries Submitted On:}~\@reportdate}	
+		\par\vskip 3pt
+		{\neutralcolour\itshape \bfseries Submitted To:}
+		\par
+		{\neutralcolour\itshape \@reportrecipient}	
+		\cleardoublepage
+	\else
+		\thispagestyle{plain}
+		\vspace*{-0.75in}
 
-  \mbox{%
-    \parbox{3.25in}{%
-      \includegraphics[width=1.1in]{memorial} \vspace{6pt} \\
-      {\neutralcolour \bf \hspace{1pt}\@faculty}
-    }
-    \parbox{2in}{
-      \neutralcolour \bf
-      \@reporttype \\
-      \@courseprefix \@coursenumber \\
-      \\
-      \@studentname\ --- \@studentnumber \\
-      \@reportdate
-    }
-  }
+		\mbox{%
+			\parbox{3.25in}{%
+				\ifblackandwhite
+				\includegraphics[width=1.1in]{memorial-bw} \vspace{6pt} \\
+				\else
+				\includegraphics[width=1.1in]{memorial} \vspace{6pt} \\
+				\fi
+				{\neutralcolour \bf \hspace{1pt}\@faculty}
+			}
+			\parbox{2in}{
+				\neutralcolour \bf
+				\@reporttype \\
+				\@courseprefix \@coursenumber \\
+				\\ 
+				\@studentname~---~\@studentnumber \\
+				\@reportdate
+			}
+		}
 
-  \vspace{.2in}
+		\vspace{.2in}
 
-  \if@bigtitle
-	  {\bf \LARGE \headercolour~\@reporttitle}
-  \else
-	  {\bf \LARGE \headercolour \@reporttype~\ifx\@reportnumber\@XX\relax~---~\else\@reportnumber:~\fi\@reporttitle}
-  \fi
+		\if@bigtitle
+			{\bfseries \LARGE \headercolour~\@reporttitle}
+		\else
+			{\bfseries \LARGE \headercolour \@reporttype~\ifx\@reportnumber\@XX\relax~---~\else\@reportnumber:~\fi\@reporttitle}
+		\fi
+	\fi
 }
 
 
@@ -192,9 +248,15 @@
 \titlespacing{\subsection}{0pt}{1em}{0.25em}
 \titlespacing{\subsubsection}{0pt}{1em}{0em}
 
-\titleformat{name=\section}{\Large \bf \headercolour}{\thesection}{.5em}{}
-\titleformat{name=\subsection}{\large \bf \headercolour}{\thesubsection}{.5em}{}
-\titleformat{name=\subsubsection}{\bf \headercolour}{\thesubsubsection}{.5em}{}
+\if@longreport
+	\titleformat{name=\section}{\Large\bfseries\sffamily\headercolour\raggedright}{\thesection}{.5em}{}
+	\titleformat{name=\subsection}{\itshape\bfseries\sffamily\headercolour\raggedright}{\thesubsection}{.5em}{}
+	\titleformat{name=\subsubsection}{\itshape\sffamily\headercolour\raggedright}{\thesubsubsection}{.5em}{}
+\else 
+	\titleformat{name=\section}{\Large \bf \headercolour\raggedright}{\thesection}{.5em}{}
+	\titleformat{name=\subsection}{\large \bf \headercolour\raggedright}{\thesubsection}{.5em}{}
+	\titleformat{name=\subsubsection}{\bf \headercolour\raggedright}{\thesubsubsection}{.5em}{}
+\fi
 
 
 \newenvironment{answer}

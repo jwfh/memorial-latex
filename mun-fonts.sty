@@ -2,16 +2,21 @@
 \RequirePackage{hyperref}
 
 \setmainfont[%
+	Path=/usr/local/share/fonts/OTF/,
 	Ligatures=TeX,
 	Scale=1.075,
 	LetterSpace=0,
-	BoldFont={*-Semibold},
-	ItalicFont={*-Italic},
-	BoldItalicFont={*-SemiboldItalic}
-]{GaramondPremrPro}
+	BoldFont={AdobeGaramondProSemibold.otf},
+	ItalicFont={AdobeGaramondProItalic.otf},
+	BoldItalicFont={GaramondPremrPro-SemiboldItalic.otf}
+]{AdobeGaramondPro.otf}
 \setsansfont[%
-	Ligatures=TeX
-]{Avenir Light}
+	Path=/usr/local/share/fonts/OTF/,
+	Ligatures=TeX,
+	BoldFont={AvenirLTStd-Heavy.otf},
+	BoldItalicFont={AvenirLTStd-HeavyOblique.otf},
+	ItalicFont={AvenirLTStd-BookOblique.otf}
+]{AvenirLTStd-Book.otf}
 
 % The branding guidelines don't actually specify a monospace font, but I think
 % this looks good with the specified fonts (and is commonly available).
