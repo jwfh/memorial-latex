@@ -46,6 +46,8 @@
 \RequirePackage{multicol}
 \RequirePackage{parskip}
 \RequirePackage{tabularx}
+\RequirePackage{microtype}
+\RequirePackage{listings}
 \RequirePackage{titlesec}
 \RequirePackage{verbatim}
 
@@ -111,7 +113,7 @@
 \newcommand{\@reporttitle}{An unnamed report}
 \newcommand{\@reportdate}{XX YYY ZZZZ}
 \newcommand{\@reporttype}{Assignment}
-\newcommand{\@reportrecipient}{Dr.~John~Appleseed\\Faculty of Engineering and Applied Science\\Department of Electrical and Computer Engineering}
+\newcommand{\@reportrecipient}{Dr.~John~Appleseed\\Faculty of Foo and Bar\\Department of Baz}
 
 \newcommand{\@studentname}{Irma Semper}
 \newcommand{\@studentnumber}{1234567}
@@ -128,7 +130,7 @@
 \newcommand{\reporttitle}[1]{\renewcommand\@reporttitle{#1}}
 \newcommand{\reportdate}[1]{\renewcommand\@reportdate{#1}}
 \newcommand{\reporttype}[1]{\renewcommand\@reporttype{#1}}
-\newcommand{\reportrecipient}[1]{\renewcommand{\@reportnumber}{#1}}
+\newcommand{\reportrecipient}[1]{\renewcommand{\@reportrecipient}{#1}}
 
 \newcommand{\studentname}[1]{\renewcommand{\@studentname}{#1}}
 \newcommand{\studentnumber}[1]{\renewcommand{\@studentnumber}{#1}}
@@ -172,6 +174,8 @@
 %
 \setlength{\columnsep}{18pt}
 
+\def\arraystretch{1.25}
+\parskip=4pt
 
 %
 % Customised title:
@@ -277,6 +281,48 @@
   {\expandafter\endcomment}
   {\end{mdframed}}
 }
+
+\newdimen\saveparindent
+\saveparindent=\parindent
+\newenvironment{studentanswer}{\begin{mdframed}\parindent=\saveparindent\noindent\hglue-0.05em}{\end{mdframed}\par\vglue 12pt}
+
+\lstdefinestyle{code}{
+	name=code,
+	% Let the language default to C; this setting may be overwritten by providing a `language=xxxx' option
+	language=c,
+	basicstyle=\ttfamily,
+	columns=fullflexible,
+	numbers=left,
+	breakatwhitespace=true,
+	numberstyle=\scriptsize,
+	numbersep=5pt,
+	frame=single,
+	breaklines=true,
+	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	breakindent=12pt,
+	aboveskip=0.5 \baselineskip,
+	belowskip=0.5 \baselineskip,
+	% firstnumber=last,
+}
+
+\lstdefinestyle{inboxcode}{
+	style=code,
+	frame=tb,
+	numbersep=15pt,
+}
+
+\lstnewenvironment{code}[1][]{%
+	\lstset{style=code, #1}
+}{%
+}
+
+\lstnewenvironment{inboxcode}[1][]{%
+	\lstset{style=inboxcode, #1}
+}{%
+}
+
+\lstset{style=code}
+\lstdefinelanguage{none}{identifierstyle=}
 
 \makeatother
 
