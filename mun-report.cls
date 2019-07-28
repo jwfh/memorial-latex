@@ -33,24 +33,6 @@
 % Use the basic article structure.
 \LoadClass{article}
 
-\RequirePackage{mun-fonts}
-\RequirePackage{mun-colour}
-
-\RequirePackage{calc}
-\RequirePackage{fancyhdr}
-\RequirePackage[right=1.25in, left=1.25in, top=1in, bottom=1in, includeheadfoot]{geometry}
-\RequirePackage{graphicx}
-\RequirePackage{hyperref}
-\RequirePackage{ifthen}
-\RequirePackage[framemethod=tikz]{mdframed}
-\RequirePackage{multicol}
-\RequirePackage{parskip}
-\RequirePackage{tabularx}
-\RequirePackage{microtype}
-\RequirePackage{listings}
-\RequirePackage{titlesec}
-\RequirePackage{verbatim}
-
 %
 % Use the names "Engineering", "Faculty of Engineering and Applied Science"
 % and "ENGI" in the appropriate places. Emit the Engineering-specific policy
@@ -77,6 +59,8 @@
 \@longreportfalse
 \DeclareOption{longreport}{\@longreporttrue}
 
+\DeclareOption{colorlinks}{\PassOptionsToPackage{colorlinks}{hyperref}}
+
 \newif\ifblackandwhite
 \blackandwhitefalse
 \DeclareOption{bw}{
@@ -93,6 +77,23 @@
 
 \makeatletter
 
+\RequirePackage{mun-fonts}
+\RequirePackage{mun-colour}
+
+\RequirePackage{calc}
+\RequirePackage{fancyhdr}
+\RequirePackage[right=1.25in, left=1.25in, top=1in, bottom=1in, includeheadfoot]{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage{ifthen}
+\RequirePackage[framemethod=tikz]{mdframed}
+\RequirePackage{multicol}
+\RequirePackage{parskip}
+\RequirePackage{tabularx}
+\RequirePackage{microtype}
+\RequirePackage{listings}
+\RequirePackage{titlesec}
+\RequirePackage{verbatim}
 
 %
 % Internal macros that represent key course information:
