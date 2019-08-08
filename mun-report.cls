@@ -57,9 +57,18 @@
 
 \newif\if@longreport
 \@longreportfalse
-\DeclareOption{longreport}{\@longreporttrue}
+\DeclareOption{longreport}{%
+	\@longreporttrue
+	\PassOptionsToClass{twocolumn}{article}
+}
 
-\DeclareOption{colorlinks}{\PassOptionsToPackage{colorlinks}{hyperref}}
+\DeclareOption{colorlinks}{%
+	\PassOptionsToPackage{%
+		linkcolor=black,
+		citecolor=MUNGrey,
+		urlcolor=MUNClaret
+	}{hyperref}
+}
 
 \newif\ifblackandwhite
 \blackandwhitefalse
@@ -80,20 +89,35 @@
 \RequirePackage{mun-fonts}
 \RequirePackage{mun-colour}
 
+\RequirePackage{amsmath}
 \RequirePackage{calc}
 \RequirePackage{fancyhdr}
 \RequirePackage[right=1.25in, left=1.25in, top=1in, bottom=1in, includeheadfoot]{geometry}
 \RequirePackage{graphicx}
 \RequirePackage{hyperref}
 \RequirePackage{ifthen}
+\RequirePackage{xcolor}
 \RequirePackage[framemethod=tikz]{mdframed}
 \RequirePackage{multicol}
 \RequirePackage{parskip}
 \RequirePackage{tabularx}
 \RequirePackage{microtype}
 \RequirePackage{listings}
+\RequirePackage{enumitem}
+\RequirePackage{tabularx}
+\RequirePackage{caption}
 \RequirePackage{titlesec}
 \RequirePackage{verbatim}
+\RequirePackage[%
+	bibstyle=ieee,
+	citestyle=numeric-comp,
+	isbn=true,
+	doi=false,
+	url=true,
+	defernumbers=true,
+	bibencoding=utf8,
+	backend=bibtex
+]{biblatex}
 
 %
 % Internal macros that represent key course information:
@@ -137,6 +161,10 @@
 \newcommand{\studentnumber}[1]{\renewcommand{\@studentnumber}{#1}}
 
 \newcommand{\@XX}{XX}
+
+
+\newcommand{\faculty}{\@faculty}
+\newcommand{\shortfaculty}{\@shortfaculty}
 
 
 %
@@ -185,9 +213,17 @@
 \newcommand{\head}[1]{\textbf{\headercolour #1}}
 \newcommand{\wide}[1]{\multicolumn{3}{p{0.85 \hsize}}{#1}}
 
+\newif\if@tmptwocolumn
+\if@twocolumn
+	\@tmptwocolumntrue
+\else
+	\@tmptwocolumnfalse
+\fi
+
 \renewcommand{\maketitle}
 {%
 	\if@longreport
+		\if@tmptwocolumn\onecolumn one\fi
 		\thispagestyle{empty}
 		\vspace*{-48pt}
 		\begin{flushright}
@@ -206,11 +242,14 @@
 			{\large\neutralcolour \@studentname\par\@studentnumber}
 		\end{center}
 		\vfill
-		{\neutralcolour\itshape {\bfseries Submitted On:}~\@reportdate}	
-		\par\vskip 3pt
-		{\neutralcolour\itshape \bfseries Submitted To:}
+		{\neutralcolour\itshape {\bfseries Submitted~On:}~\@reportdate}	
 		\par
-		{\neutralcolour\itshape \@reportrecipient}	
+		{\neutralcolour\itshape \bfseries Submitted~To:}
+		\par\vglue -2pt
+		{\neutralcolour\itshape \@reportrecipient}
+		\par
+		{\neutralcolour\itshape {\bfseries Course~Name:}~\@shortfaculty~\@coursenumber~--~\@coursename}
+		\if@tmptwocolumn\twocolumn now two\fi
 		\cleardoublepage
 	\else
 		\thispagestyle{plain}
@@ -242,6 +281,19 @@
 		\else
 			{\bfseries \LARGE \headercolour \@reporttype~\ifx\@reportnumber\@XX\relax~---~\else\@reportnumber:~\fi\@reporttitle}
 		\fi
+	\fi
+}
+
+\let\@oldtableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{%
+	\if@tmptwocolumn
+		Setting one
+		\onecolumn
+	\fi
+	\@oldtableofcontents
+	\if@tmptwocolumn
+		Setting two
+		\twocolumn
 	\fi
 }
 
